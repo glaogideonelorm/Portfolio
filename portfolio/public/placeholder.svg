@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+  <rect width="400" height="300" fill="#cccccc" />
+  <text x="200" y="150" font-size="24" text-anchor="middle" fill="#666666" dy="8">
+    400×300
+  </text>
+</svg> 
