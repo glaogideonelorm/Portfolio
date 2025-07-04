@@ -1,56 +1,84 @@
 package com.gideonglago.portfolio.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gideonglago.portfolio.models.Project;
-import com.gideonglago.portfolio.services.ProjectService;
-import jakarta.validation.Valid;
+import com.gideonglago.portfolio.repositories.ProjectRepository;
 
 @RestController
-@RequestMapping("/api/v1/portfolio/projects")
+@RequestMapping("/api/projects")
+@CrossOrigin(origins = "*")
 public class ProjectController {
 
-    private final ProjectService projectService;
+    @Autowired
+    private ProjectRepository projectRepository;
 
-    public ProjectController(ProjectService projectService) {
-        this.projectService = projectService;
-    }
-
+    // GET all projects
     @GetMapping
-    public List<Project> getAllProjects() {
-        return projectService.findAll();
+    public ResponseEntity<List<Project>> getAllProjects() {
+        List<Project> projects = projectRepository.findAll();
+        return ResponseEntity.ok(projects);
     }
 
+    // GET project by ID
     @GetMapping("/{id}")
-    public Project getProjectById(@PathVariable Long id) {
-        return projectService.findById(id);
+    public ResponseEntity<Project> getProjectById(@PathVariable Long id) {
+        Optional<Project> project = projectRepository.findById(id);
+        return project.map(ResponseEntity::ok)
+                     .orElse(ResponseEntity.notFound().build());
     }
 
+    // POST create new project
     @PostMapping
-    public ResponseEntity<Project> createProject(@Valid @RequestBody Project project) {
-        Project created = projectService.create(project);
-        return new ResponseEntity<>(created, HttpStatus.CREATED);
+    public ResponseEntity<Project> createProject(@RequestBody Project project) {
+        Project savedProject = projectRepository.save(project);
+        return ResponseEntity.ok(savedProject);
     }
 
+    // PUT update project
     @PutMapping("/{id}")
-    public Project updateProject(@PathVariable Long id, @Valid @RequestBody Project project) {
-        return projectService.update(id, project);
+    public ResponseEntity<Project> updateProject(@PathVariable Long id, @RequestBody Project projectDetails) {
+        Optional<Project> projectOptional = projectRepository.findById(id);
+        
+        if (projectOptional.isPresent()) {
+            Project project = projectOptional.get();
+            project.setTitle(projectDetails.getTitle());
+            project.setDescription(projectDetails.getDescription());
+            project.setTechStack(projectDetails.getTechStack());
+            project.setGithubUrl(projectDetails.getGithubUrl());
+            project.setDemoUrl(projectDetails.getDemoUrl());
+            project.setImages(projectDetails.getImages());
+            
+            Project updatedProject = projectRepository.save(project);
+            return ResponseEntity.ok(updatedProject);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
+    // DELETE project
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProject(@PathVariable Long id) {
-        projectService.delete(id);
-        return ResponseEntity.noContent().build();
+        Optional<Project> projectOptional = projectRepository.findById(id);
+        
+        if (projectOptional.isPresent()) {
+            projectRepository.deleteById(id);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 } 

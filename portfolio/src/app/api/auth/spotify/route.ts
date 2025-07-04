@@ -25,9 +25,6 @@ export async function GET(request: Request) {
 
     const authUrl = `https://accounts.spotify.com/authorize?${params.toString()}`;
     
-    console.log('🎵 Spotify Auth URL:', authUrl);
-    console.log('🎵 Redirect URI:', redirectUri);
-    
     // Instead of redirecting, return the URL
     return NextResponse.json({ url: authUrl });
   } catch (error) {

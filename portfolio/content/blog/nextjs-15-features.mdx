@@ -1,0 +1,200 @@
+---
+title: "Next.js 15: What's New and Why It Matters"
+date: "2024-07-04"
+excerpt: "Explore the latest features in Next.js 15, including the new App Router improvements, enhanced performance, and developer experience upgrades."
+tags: ["nextjs", "react", "frontend", "performance"]
+author: "Gideon Glago"
+---
+
+# Next.js 15: What's New and Why It Matters 🚀
+
+Next.js 15 has arrived with some exciting new features that make building modern web applications even more powerful and efficient. Let's dive into what's new and how it can improve your development workflow.
+
+## Key Features
+
+### 1. Enhanced App Router
+
+The App Router has received significant improvements in Next.js 15:
+
+```typescript
+// New parallel routes syntax
+export default function Layout({
+  children,
+  modal,
+}: {
+  children: React.ReactNode;
+  modal: React.ReactNode;
+}) {
+  return (
+    <html>
+      <body>
+        {children}
+        {modal}
+      </body>
+    </html>
+  );
+}
+```
+
+### 2. Improved Performance
+
+Next.js 15 introduces several performance optimizations:
+
+- **Faster Build Times**: Up to 50% improvement in build performance
+- **Better Caching**: Enhanced static and dynamic caching strategies
+- **Optimized Bundling**: Smaller bundle sizes with better tree shaking
+
+### 3. Enhanced Developer Experience
+
+```bash
+# New CLI commands
+npx next@latest init my-app --typescript --tailwind --eslint
+npx next@latest build --debug
+```
+
+## Real-World Implementation
+
+Here's how I implemented some of these features in my portfolio:
+
+```typescript
+// Enhanced metadata handling
+export const metadata: Metadata = {
+  title: {
+    template: "%s | Gideon Glago",
+    default: "Gideon Glago - Full Stack Developer",
+  },
+  description: "Full-stack developer specializing in modern web technologies",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://gideonglago.com",
+    siteName: "Gideon Glago Portfolio",
+  },
+};
+```
+
+## Performance Improvements
+
+The new performance features are particularly impressive:
+
+### Before (Next.js 14)
+
+```javascript
+// Old way of handling images
+import Image from "next/image";
+
+<Image src="/hero.jpg" alt="Hero" width={1200} height={600} priority />;
+```
+
+### After (Next.js 15)
+
+```javascript
+// New automatic optimization
+import Image from "next/image";
+
+<Image
+  src="/hero.jpg"
+  alt="Hero"
+  fill
+  sizes="(max-width: 768px) 100vw, 50vw"
+  priority
+  className="object-cover"
+/>;
+```
+
+## Migration Guide
+
+If you're upgrading from Next.js 14, here's what you need to know:
+
+1. **Update Dependencies**
+
+```bash
+npm install next@latest react@latest react-dom@latest
+```
+
+2. **Update Configuration**
+
+```javascript
+// next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  experimental: {
+    // New experimental features
+    optimizePackageImports: ["@radix-ui/react-icons"],
+  },
+};
+
+module.exports = nextConfig;
+```
+
+3. **Check Breaking Changes**
+
+- Review the [migration guide](https://nextjs.org/docs/upgrading)
+- Test thoroughly in development
+- Update any deprecated APIs
+
+## Best Practices
+
+Here are some best practices for using Next.js 15:
+
+### 1. Use the New Image Component Features
+
+```typescript
+// Take advantage of automatic optimization
+<Image
+  src={imageUrl}
+  alt={altText}
+  fill
+  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+  className="object-cover"
+/>
+```
+
+### 2. Leverage Parallel Routes
+
+```typescript
+// @modal/page.tsx
+export default function Modal() {
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
+      <div className="bg-white p-6 rounded-lg">
+        <h2>Modal Content</h2>
+      </div>
+    </div>
+  );
+}
+```
+
+### 3. Optimize Metadata
+
+```typescript
+// Generate dynamic metadata
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const post = await getPost(params.slug);
+
+  return {
+    title: post.title,
+    description: post.excerpt,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+    },
+  };
+}
+```
+
+## Conclusion
+
+Next.js 15 brings significant improvements to performance, developer experience, and the overall ecosystem. The enhanced App Router, better performance optimizations, and improved tooling make it an excellent choice for modern web development.
+
+Whether you're building a portfolio like mine or a large-scale application, Next.js 15 provides the tools and performance you need to create exceptional user experiences.
+
+---
+
+_Ready to upgrade? Check out the [official Next.js 15 documentation](https://nextjs.org/docs) for more details!_
+
+_Happy coding! 🎉_

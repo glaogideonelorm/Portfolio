@@ -128,10 +128,10 @@ export default function MusicPage() {
 
             <div className="prose prose-invert max-w-none">
               <p className="text-gray-300 text-lg leading-relaxed">
-                Music isn't just background noise when I code—it's an essential
-                part of my development process. Different genres trigger
-                different mental states, helping me tackle various types of
-                challenges.
+                Music isn&apos;t just background noise when I code—it&apos;s an
+                essential part of my development process. Different genres
+                trigger different mental states, helping me tackle various types
+                of challenges.
               </p>
 
               <p className="text-gray-300 text-lg leading-relaxed">
@@ -142,9 +142,9 @@ export default function MusicPage() {
               </p>
 
               <p className="text-gray-300 text-lg leading-relaxed">
-                I've discovered that certain songs become associated with
+                I&apos;ve discovered that certain songs become associated with
                 breakthrough moments in projects, creating a personal library of
-                "victory tracks" that remind me of solved problems and
+                &quot;victory tracks&quot; that remind me of solved problems and
                 successful deployments.
               </p>
             </div>
@@ -285,11 +285,11 @@ export default function MusicPage() {
           className="text-center bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-sm rounded-lg p-12"
         >
           <h3 className="text-2xl font-bold text-white mb-4">
-            Let's Share Music
+            Let&apos;s Share Music
           </h3>
           <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
             Always curious about new music that could enhance my coding
-            sessions. Got a track that puts you in the zone? I'd love to
+            sessions. Got a track that puts you in the zone? I&apos;d love to
             discover new sounds that could become part of my development
             soundtrack.
           </p>

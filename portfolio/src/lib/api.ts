@@ -1,18 +1,15 @@
 import { Buffer } from "buffer";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || (process.env.NODE_ENV === 'production' 
-  ? "https://api.gideonglago.com/api/v1/portfolio" 
-  : "http://localhost:8080/api/v1/portfolio");
+const API_BASE_URL = 'http://localhost:8080/api';
 
 export interface Project {
   id?: number;
   title: string;
   description: string;
-  techStack?: string[];
-  githubUrl?: string;
-  demoUrl?: string;
-  images?: string[];
-  tags?: string[]; // legacy field for front-end filtering
+  techStack: string[];
+  githubUrl: string;
+  demoUrl: string;
+  images: string[];
 }
 
 interface Credentials {
@@ -36,50 +33,92 @@ async function handleResponse<T>(res: Response): Promise<T> {
   return res.json() as Promise<T>;
 }
 
+// GET all projects
 export async function getProjects(): Promise<Project[]> {
-  const res = await fetch(`${API_BASE}/projects`, {
-    cache: "no-store",
-  });
-  return handleResponse<Project[]>(res);
+  try {
+    const response = await fetch(`${API_BASE_URL}/projects`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching projects:', error);
+    return [];
+  }
 }
 
-export async function createProject(
-  data: Project,
-  creds?: Credentials
-): Promise<Project> {
-  const res = await fetch(`${API_BASE}/projects`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      ...authHeader(creds),
-    },
-    body: JSON.stringify(data),
-  });
-  return handleResponse<Project>(res);
+// GET project by ID
+export async function getProject(id: number): Promise<Project | null> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/projects/${id}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching project ${id}:`, error);
+    return null;
+  }
 }
 
-export async function updateProject(
-  id: number,
-  data: Project,
-  creds?: Credentials
-): Promise<Project> {
-  const res = await fetch(`${API_BASE}/projects/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      ...authHeader(creds),
-    },
-    body: JSON.stringify(data),
-  });
-  return handleResponse<Project>(res);
+// POST create new project
+export async function createProject(project: Omit<Project, 'id'>): Promise<Project | null> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/projects`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(project),
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Error creating project:', error);
+    return null;
+  }
 }
 
-export async function deleteProject(id: number, creds?: Credentials): Promise<void> {
-  const res = await fetch(`${API_BASE}/projects/${id}`, {
-    method: "DELETE",
-    headers: {
-      ...authHeader(creds),
-    },
-  });
-  if (!res.ok) throw new Error(await res.text());
+// PUT update project
+export async function updateProject(id: number, project: Project): Promise<Project | null> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/projects/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(project),
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error(`Error updating project ${id}:`, error);
+    return null;
+  }
+}
+
+// DELETE project
+export async function deleteProject(id: number): Promise<boolean> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/projects/${id}`, {
+      method: 'DELETE',
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return true;
+  } catch (error) {
+    console.error(`Error deleting project ${id}:`, error);
+    return false;
+  }
 } 

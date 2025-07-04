@@ -12,6 +12,7 @@ import {
   Plus,
   Globe,
   Phone,
+  BookOpen,
 } from "lucide-react";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import DevModeToggle from "@/components/ui/DevModeToggle";
@@ -30,6 +31,8 @@ import RotatingText from "@/components/animations/RotatingText";
 import CustomCursor from "@/components/ui/CustomCursor";
 import { useMagneticEffect } from "@/hooks/useMagneticEffect";
 import ParticleToggle from "@/components/ui/ParticleToggle";
+import ProjectsSection from "@/components/sections/ProjectsSection";
+import ContactForm from "@/components/ui/ContactForm";
 
 // Lazy load heavy components to improve initial page load
 const ParticleBackground = lazy(
@@ -275,6 +278,14 @@ export default function Home() {
               >
                 <Mail size={24} />
               </motion.a>
+              <motion.a
+                href="/blog"
+                whileHover={{ scale: 1.2, rotate: -5 }}
+                whileTap={{ scale: 0.9 }}
+                className="text-white dark:text-white light:text-gray-800 hover:text-gray-300 dark:hover:text-gray-300 light:hover:text-gray-600 transition-all duration-300 cursor-hover p-2 rounded-full hover:bg-white/10"
+              >
+                <BookOpen size={24} />
+              </motion.a>
             </div>
           </motion.div>
         </section>
@@ -318,278 +329,7 @@ export default function Home() {
         </section>
 
         {/* Projects Section */}
-        <section className="py-20" id="projects">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="max-w-4xl mx-auto"
-          >
-            <div className="flex justify-between items-center mb-8">
-              <h2 className="text-3xl md:text-4xl font-bold text-gradient">
-                Featured Projects
-              </h2>
-              {isDevMode && (
-                <motion.button
-                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary to-secondary rounded-full text-white hover:opacity-90 transition-all duration-300 cursor-hover"
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Plus size={20} />
-                  Add Project
-                </motion.button>
-              )}
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {/* Featured Projects */}
-              <motion.div
-                ref={projectRef as any}
-                className="chat-bubble cursor-hover group"
-                whileHover={{ scale: 1.05, y: -10 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                  <h3 className="text-xl font-semibold text-white dark:text-white light:text-gray-800">
-                    Portfolio Website
-                  </h3>
-                </div>
-                <p className="text-gray-300 dark:text-gray-300 light:text-gray-600 mb-4">
-                  This very portfolio! Built with Next.js 15, TypeScript,
-                  Tailwind CSS, and Framer Motion. Features Spotify integration,
-                  custom animations, and responsive design.
-                </p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <span className="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs rounded">
-                    TypeScript
-                  </span>
-                  <span className="px-2 py-1 bg-green-500/20 text-green-300 text-xs rounded">
-                    Next.js
-                  </span>
-                  <span className="px-2 py-1 bg-purple-500/20 text-purple-300 text-xs rounded">
-                    Framer Motion
-                  </span>
-                </div>
-                <div className="flex gap-3">
-                  <a
-                    href="https://github.com/glaogideonelorm/Portfolio"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-400 hover:text-blue-300 transition-colors"
-                  >
-                    <Github size={16} className="inline mr-1" />
-                    Code
-                  </a>
-                  <span className="text-green-400">
-                    <Globe size={16} className="inline mr-1" />
-                    Live
-                  </span>
-                </div>
-              </motion.div>
-
-              <motion.div
-                className="chat-bubble cursor-hover group"
-                whileHover={{ scale: 1.05, y: -10 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                  <h3 className="text-xl font-semibold text-white dark:text-white light:text-gray-800">
-                    Spotify Album Manager
-                  </h3>
-                </div>
-                <p className="text-gray-300 dark:text-gray-300 light:text-gray-600 mb-4">
-                  Python application for managing Spotify playlists and albums.
-                  Demonstrates API integration and music data manipulation with
-                  clean, maintainable code.
-                </p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <span className="px-2 py-1 bg-yellow-500/20 text-yellow-300 text-xs rounded">
-                    Python
-                  </span>
-                  <span className="px-2 py-1 bg-green-500/20 text-green-300 text-xs rounded">
-                    Spotify API
-                  </span>
-                  <span className="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs rounded">
-                    Data Processing
-                  </span>
-                </div>
-                <div className="flex gap-3">
-                  <a
-                    href="https://github.com/glaogideonelorm/SpotifyAlbum"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-400 hover:text-blue-300 transition-colors"
-                  >
-                    <Github size={16} className="inline mr-1" />
-                    Code
-                  </a>
-                </div>
-              </motion.div>
-
-              <motion.div
-                className="chat-bubble cursor-hover group"
-                whileHover={{ scale: 1.05, y: -10 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                  <h3 className="text-xl font-semibold text-white dark:text-white light:text-gray-800">
-                    Email Spam Checker
-                  </h3>
-                </div>
-                <p className="text-gray-300 dark:text-gray-300 light:text-gray-600 mb-4">
-                  JavaScript-based email spam detection system using machine
-                  learning algorithms. Features real-time analysis and
-                  cybersecurity-focused threat detection.
-                </p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <span className="px-2 py-1 bg-yellow-500/20 text-yellow-300 text-xs rounded">
-                    JavaScript
-                  </span>
-                  <span className="px-2 py-1 bg-red-500/20 text-red-300 text-xs rounded">
-                    ML
-                  </span>
-                  <span className="px-2 py-1 bg-orange-500/20 text-orange-300 text-xs rounded">
-                    Cybersecurity
-                  </span>
-                </div>
-                <div className="flex gap-3">
-                  <a
-                    href="https://github.com/telexintegrations/Email-spam-checker"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-400 hover:text-blue-300 transition-colors"
-                  >
-                    <Github size={16} className="inline mr-1" />
-                    Code
-                  </a>
-                </div>
-              </motion.div>
-
-              <motion.div
-                className="chat-bubble cursor-hover group"
-                whileHover={{ scale: 1.05, y: -10 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-                  <h3 className="text-xl font-semibold text-white dark:text-white light:text-gray-800">
-                    FastAPI Book Project
-                  </h3>
-                </div>
-                <p className="text-gray-300 dark:text-gray-300 light:text-gray-600 mb-4">
-                  RESTful API built with FastAPI for book management system.
-                  Part of HNG12 DevOps x Backend internship demonstrating modern
-                  Python web development practices.
-                </p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <span className="px-2 py-1 bg-yellow-500/20 text-yellow-300 text-xs rounded">
-                    Python
-                  </span>
-                  <span className="px-2 py-1 bg-green-500/20 text-green-300 text-xs rounded">
-                    FastAPI
-                  </span>
-                  <span className="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs rounded">
-                    REST API
-                  </span>
-                </div>
-                <div className="flex gap-3">
-                  <a
-                    href="https://github.com/glaogideonelorm/fastapi-book-project"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-400 hover:text-blue-300 transition-colors"
-                  >
-                    <Github size={16} className="inline mr-1" />
-                    Code
-                  </a>
-                </div>
-              </motion.div>
-
-              <motion.div
-                className="chat-bubble cursor-hover group"
-                whileHover={{ scale: 1.05, y: -10 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
-                  <h3 className="text-xl font-semibold text-white dark:text-white light:text-gray-800">
-                    HNG Internship Projects
-                  </h3>
-                </div>
-                <p className="text-gray-300 dark:text-gray-300 light:text-gray-600 mb-4">
-                  Collection of projects from HNG12 intensive internship
-                  program. Covers full-stack development, DevOps practices, and
-                  collaborative software engineering.
-                </p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <span className="px-2 py-1 bg-yellow-500/20 text-yellow-300 text-xs rounded">
-                    JavaScript
-                  </span>
-                  <span className="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs rounded">
-                    Full-Stack
-                  </span>
-                  <span className="px-2 py-1 bg-purple-500/20 text-purple-300 text-xs rounded">
-                    DevOps
-                  </span>
-                </div>
-                <div className="flex gap-3">
-                  <a
-                    href="https://github.com/glaogideonelorm/HNG"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-400 hover:text-blue-300 transition-colors"
-                  >
-                    <Github size={16} className="inline mr-1" />
-                    Code
-                  </a>
-                </div>
-              </motion.div>
-
-              <motion.div
-                className="chat-bubble cursor-hover group"
-                whileHover={{ scale: 1.05, y: -10 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-3 h-3 bg-indigo-500 rounded-full"></div>
-                  <h3 className="text-xl font-semibold text-white dark:text-white light:text-gray-800">
-                    Personal Projects Hub
-                  </h3>
-                </div>
-                <p className="text-gray-300 dark:text-gray-300 light:text-gray-600 mb-4">
-                  Repository containing various personal coding experiments,
-                  algorithms, and small applications. Showcases problem-solving
-                  skills and continuous learning journey.
-                </p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <span className="px-2 py-1 bg-gray-500/20 text-gray-300 text-xs rounded">
-                    Various
-                  </span>
-                  <span className="px-2 py-1 bg-green-500/20 text-green-300 text-xs rounded">
-                    Algorithms
-                  </span>
-                  <span className="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs rounded">
-                    Experiments
-                  </span>
-                </div>
-                <div className="flex gap-3">
-                  <a
-                    href="https://github.com/glaogideonelorm/Personal-Projects"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-400 hover:text-blue-300 transition-colors"
-                  >
-                    <Github size={16} className="inline mr-1" />
-                    Code
-                  </a>
-                </div>
-              </motion.div>
-            </div>
-          </motion.div>
-        </section>
+        <ProjectsSection />
 
         {/* Skills Section */}
         <section className="py-20" id="skills">
@@ -648,87 +388,127 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="max-w-4xl mx-auto text-center"
+            className="max-w-6xl mx-auto"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-8 text-gradient">
-              Let's Connect
-            </h2>
-            <p className="text-lg text-gray-300 mb-12 max-w-2xl mx-auto">
-              Always open to discussing new opportunities, collaborating on
-              interesting projects, or just having a conversation about
-              technology and innovation.
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-              <motion.a
-                href="mailto:glagogideonelorm2006@gmail.com"
-                whileHover={{ scale: 1.05, y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-white/5 backdrop-blur-sm rounded-xl p-8 hover:bg-white/10 transition-all duration-300 cursor-hover border border-white/10"
-              >
-                <Mail className="w-12 h-12 text-blue-400 mx-auto mb-4" />
-                <h3 className="text-xl font-bold text-white mb-2">Email</h3>
-                <p className="text-gray-300">glagogideonelorm2006@gmail.com</p>
-              </motion.a>
-
-              <motion.a
-                href="https://www.linkedin.com/in/glagogideon/"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.05, y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-white/5 backdrop-blur-sm rounded-xl p-8 hover:bg-white/10 transition-all duration-300 cursor-hover border border-white/10"
-              >
-                <Linkedin className="w-12 h-12 text-blue-500 mx-auto mb-4" />
-                <h3 className="text-xl font-bold text-white mb-2">LinkedIn</h3>
-                <p className="text-gray-300">Professional Network</p>
-              </motion.a>
-
-              <motion.a
-                href="https://github.com/glaogideonelorm"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.05, y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-white/5 backdrop-blur-sm rounded-xl p-8 hover:bg-white/10 transition-all duration-300 cursor-hover border border-white/10"
-              >
-                <Github className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-xl font-bold text-white mb-2">GitHub</h3>
-                <p className="text-gray-300">Code Repository</p>
-              </motion.a>
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold mb-8 text-gradient">
+                Let's Connect
+              </h2>
+              <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+                Always open to discussing new opportunities, collaborating on
+                interesting projects, or just having a conversation about
+                technology and innovation.
+              </p>
             </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="bg-gradient-to-r from-purple-900/30 to-blue-900/30 backdrop-blur-sm rounded-xl p-8 border border-white/10"
-            >
-              <h3 className="text-xl font-bold text-white mb-4">
-                Based in Ghana 🇬🇭
-              </h3>
-              <p className="text-gray-300 mb-6">
-                Computer Science graduate from University of Ghana with
-                expertise in cybersecurity, full-stack development, and AI
-                integration. Available for remote collaboration and open to
-                relocation opportunities.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <span className="px-4 py-2 bg-white/10 rounded-full text-sm text-white">
-                  Full-Stack Development
-                </span>
-                <span className="px-4 py-2 bg-white/10 rounded-full text-sm text-white">
-                  Cybersecurity
-                </span>
-                <span className="px-4 py-2 bg-white/10 rounded-full text-sm text-white">
-                  AI/ML Integration
-                </span>
-                <span className="px-4 py-2 bg-white/10 rounded-full text-sm text-white">
-                  Remote Ready
-                </span>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+              {/* Contact Form */}
+              <div>
+                <h3 className="text-2xl font-semibold text-white mb-6">
+                  Send me a message
+                </h3>
+                <ContactForm />
               </div>
-            </motion.div>
+
+              {/* Contact Info */}
+              <div className="space-y-8">
+                <div>
+                  <h3 className="text-2xl font-semibold text-white mb-6">
+                    Get in touch
+                  </h3>
+                  <p className="text-gray-300 mb-8">
+                    I'm always interested in hearing about new opportunities,
+                    interesting projects, or just having a chat about
+                    technology.
+                  </p>
+                </div>
+
+                <div className="space-y-6">
+                  <motion.a
+                    href="mailto:glagogideonelorm2006@gmail.com"
+                    whileHover={{ scale: 1.05, x: 5 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center gap-4 p-4 bg-white/5 backdrop-blur-sm rounded-xl hover:bg-white/10 transition-all duration-300 cursor-hover border border-white/10"
+                  >
+                    <Mail className="w-8 h-8 text-blue-400" />
+                    <div>
+                      <h4 className="text-lg font-semibold text-white">
+                        Email
+                      </h4>
+                      <p className="text-gray-300">
+                        glagogideonelorm2006@gmail.com
+                      </p>
+                    </div>
+                  </motion.a>
+
+                  <motion.a
+                    href="https://www.linkedin.com/in/glagogideon/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.05, x: 5 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center gap-4 p-4 bg-white/5 backdrop-blur-sm rounded-xl hover:bg-white/10 transition-all duration-300 cursor-hover border border-white/10"
+                  >
+                    <Linkedin className="w-8 h-8 text-blue-500" />
+                    <div>
+                      <h4 className="text-lg font-semibold text-white">
+                        LinkedIn
+                      </h4>
+                      <p className="text-gray-300">Professional Network</p>
+                    </div>
+                  </motion.a>
+
+                  <motion.a
+                    href="https://github.com/glaogideonelorm"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.05, x: 5 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center gap-4 p-4 bg-white/5 backdrop-blur-sm rounded-xl hover:bg-white/10 transition-all duration-300 cursor-hover border border-white/10"
+                  >
+                    <Github className="w-8 h-8 text-gray-400" />
+                    <div>
+                      <h4 className="text-lg font-semibold text-white">
+                        GitHub
+                      </h4>
+                      <p className="text-gray-300">Code Repository</p>
+                    </div>
+                  </motion.a>
+                </div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  viewport={{ once: true }}
+                  className="bg-gradient-to-r from-purple-900/30 to-blue-900/30 backdrop-blur-sm rounded-xl p-6 border border-white/10"
+                >
+                  <h4 className="text-lg font-bold text-white mb-4">
+                    Based in Ghana 🇬🇭
+                  </h4>
+                  <p className="text-gray-300 mb-4">
+                    Computer Science graduate from University of Ghana with
+                    expertise in cybersecurity, full-stack development, and AI
+                    integration. Available for remote collaboration and open to
+                    relocation opportunities.
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    <span className="px-3 py-1 bg-white/10 rounded-full text-xs text-white">
+                      Full-Stack Development
+                    </span>
+                    <span className="px-3 py-1 bg-white/10 rounded-full text-xs text-white">
+                      Cybersecurity
+                    </span>
+                    <span className="px-3 py-1 bg-white/10 rounded-full text-xs text-white">
+                      AI/ML Integration
+                    </span>
+                    <span className="px-3 py-1 bg-white/10 rounded-full text-xs text-white">
+                      Remote Ready
+                    </span>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
           </motion.div>
         </section>
 

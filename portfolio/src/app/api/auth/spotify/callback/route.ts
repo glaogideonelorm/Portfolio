@@ -18,8 +18,6 @@ export async function GET(request: Request) {
     const port = url.port;
     const redirectUri = `http://127.0.0.1:${port}/callback`;
 
-    console.log('🎵 Using redirect URI for token exchange:', redirectUri);
-
     // Exchange code for access token
     const response = await fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',
