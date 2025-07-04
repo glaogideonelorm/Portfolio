@@ -32,6 +32,8 @@ import RotatingText from "@/components/animations/RotatingText";
 import CustomCursor from "@/components/ui/CustomCursor";
 import { useMagneticEffect } from "@/hooks/useMagneticEffect";
 import SkillsShowcase from "@/components/ui/SkillsShowcase";
+import ParticleBackground from "@/components/animations/ParticleBackground";
+import ParticleToggle from "@/components/ui/ParticleToggle";
 
 const hobbies = [
   {
@@ -151,6 +153,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen relative cursor-none">
+      <ParticleBackground particleCount={80} maxConnectionDistance={120} />
       <CustomCursor />
       <IntroAnimation onComplete={() => setIntroComplete(true)} />
       <AuthModal />
@@ -181,6 +184,7 @@ export default function Home() {
 
       {/* Header with toggles */}
       <header className="fixed top-0 right-0 p-4 flex gap-2 z-40">
+        <ParticleToggle />
         <ThemeToggle />
         <DevModeToggle />
       </header>
