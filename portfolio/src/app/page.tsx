@@ -637,7 +637,7 @@ export default function Home() {
               technology and innovation.
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
               <motion.a
                 href="mailto:glagogideonelorm2006@gmail.com"
                 whileHover={{ scale: 1.05, y: -5 }}
@@ -647,17 +647,6 @@ export default function Home() {
                 <Mail className="w-12 h-12 text-blue-400 mx-auto mb-4" />
                 <h3 className="text-xl font-bold text-white mb-2">Email</h3>
                 <p className="text-gray-300">glagogideonelorm2006@gmail.com</p>
-              </motion.a>
-
-              <motion.a
-                href="tel:+233530686764"
-                whileHover={{ scale: 1.05, y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-white/5 backdrop-blur-sm rounded-xl p-8 hover:bg-white/10 transition-all duration-300 cursor-hover border border-white/10"
-              >
-                <Phone className="w-12 h-12 text-green-400 mx-auto mb-4" />
-                <h3 className="text-xl font-bold text-white mb-2">Phone</h3>
-                <p className="text-gray-300">+233 530 686 764</p>
               </motion.a>
 
               <motion.a

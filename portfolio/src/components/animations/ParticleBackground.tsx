@@ -327,6 +327,37 @@ export default function ParticleBackground({
     };
   }, [handleMouseMove, handleResize]);
 
+  // Component unmount cleanup
+  useEffect(() => {
+    return () => {
+      if (frameRef.current) {
+        cancelAnimationFrame(frameRef.current);
+      }
+
+      if (rendererRef.current) {
+        if (
+          mountRef.current &&
+          mountRef.current.contains(rendererRef.current.domElement)
+        ) {
+          mountRef.current.removeChild(rendererRef.current.domElement);
+        }
+        rendererRef.current.dispose();
+      }
+
+      if (sceneRef.current) {
+        sceneRef.current.clear();
+      }
+    };
+  }, []);
+
+  // Initialize particles on first load if enabled
+  useEffect(() => {
+    if (isEnabled && !sceneRef.current) {
+      initScene();
+      animate();
+    }
+  }, [isEnabled, initScene, animate]);
+
   // Restart animation when particles are re-enabled
   useEffect(() => {
     if (isEnabled && !sceneRef.current) {
