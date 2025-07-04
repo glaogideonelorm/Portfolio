@@ -15,7 +15,7 @@ export default function RotatingText() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentPhraseIndex((prev) => (prev + 1) % ROTATING_PHRASES.length);
-    }, 3000); // Change phrase every 3 seconds
+    }, 4000); // Increased from 3000ms to 4000ms for smoother experience
 
     return () => clearInterval(interval);
   }, []);
@@ -26,10 +26,13 @@ export default function RotatingText() {
         <motion.p
           key={currentPhraseIndex}
           className="text-xl md:text-2xl text-gradient-alt text-center max-w-3xl mx-auto"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.5 }}
+          exit={{ opacity: 0, y: -15 }}
+          transition={{
+            duration: 0.3, // Reduced from 0.5s for snappier transitions
+            ease: "easeOut",
+          }}
         >
           {ROTATING_PHRASES[currentPhraseIndex]}
         </motion.p>

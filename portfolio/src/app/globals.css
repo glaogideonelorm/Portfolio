@@ -36,8 +36,9 @@ body {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: gradient 8s ease infinite;
-  background-size: 200% 200%;
+  animation: gradient 12s ease-in-out infinite;
+  background-size: 300% 300%;
+  will-change: background-position;
 }
 
 .text-gradient-alt {
@@ -45,19 +46,18 @@ body {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: gradient 8s ease infinite;
-  background-size: 200% 200%;
+  animation: gradient 12s ease-in-out infinite;
+  background-size: 300% 300%;
+  will-change: background-position;
 }
 
 @keyframes gradient {
-  0% {
+  0%,
+  100% {
     background-position: 0% 50%;
   }
   50% {
     background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
   }
 }
 
@@ -104,56 +104,56 @@ body {
   );
 }
 
-/* Custom cursor styles */
+/* Custom cursor styles - simplified */
 * {
   cursor: none !important;
 }
 
 .cursor-hover {
   position: relative;
-  transition: all 0.3s ease;
+  transition: transform 0.2s ease-out;
 }
 
 .cursor-hover:hover {
-  transform: translateZ(10px);
+  transform: translateY(-2px);
 }
 
-/* Cursor ring styles */
-.cursor-ring {
-  background: radial-gradient(
-    circle,
-    transparent 70%,
-    rgba(255, 255, 255, 0.3) 70%,
-    rgba(255, 255, 255, 0.6) 85%,
-    transparent 85%
-  );
-  backdrop-filter: blur(1px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-}
-
-.light .cursor-ring {
-  background: radial-gradient(
-    circle,
-    transparent 70%,
-    rgba(0, 0, 0, 0.15) 70%,
-    rgba(0, 0, 0, 0.3) 85%,
-    transparent 85%
-  );
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-}
-
-/* Magnetic effect for elements */
+/* Magnetic effect for elements - optimized */
 .magnetic {
-  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
 }
 
-/* Glow effect on hover */
+/* Simplified glow effect on hover */
 .cursor-hover:hover {
-  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.1));
+  filter: brightness(1.1);
 }
 
 .light .cursor-hover:hover {
-  filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.1));
+  filter: brightness(0.95);
+}
+
+/* Performance optimizations */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .text-gradient,
+  .text-gradient-alt {
+    animation: none;
+  }
+
+  .cursor-hover,
+  .magnetic {
+    transition: none;
+  }
+
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

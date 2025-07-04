@@ -1,23 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 
 export default function CustomCursor() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const animationFrameRef = useRef<number>();
 
   useEffect(() => {
-    let animationFrameId: number;
-
     const updateMousePosition = (e: MouseEvent) => {
       // Cancel any pending animation frame
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
       }
 
       // Use requestAnimationFrame for smoother updates
-      animationFrameId = requestAnimationFrame(() => {
+      animationFrameRef.current = requestAnimationFrame(() => {
         setMousePosition({ x: e.clientX, y: e.clientY });
       });
     };
@@ -42,8 +41,8 @@ export default function CustomCursor() {
 
     return () => {
       // Cancel any pending animation frame
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
       }
 
       window.removeEventListener("mousemove", updateMousePosition);
@@ -56,59 +55,49 @@ export default function CustomCursor() {
 
   return (
     <>
-      {/* Main cursor dot */}
+      {/* Main cursor dot - simplified */}
       <motion.div
-        className="fixed top-0 left-0 w-1 h-1 bg-white dark:bg-white light:bg-black rounded-full pointer-events-none z-[9999] mix-blend-difference"
+        className="fixed top-0 left-0 w-1 h-1 bg-white rounded-full pointer-events-none z-[9999]"
         style={{
           x: mousePosition.x - 2,
           y: mousePosition.y - 2,
         }}
+        transition={{
+          type: "tween",
+          ease: "linear",
+          duration: 0,
+        }}
       />
 
-      {/* Glossy outer ring */}
+      {/* Simplified outer ring - removed expensive effects */}
       <motion.div
-        className="fixed top-0 left-0 rounded-full pointer-events-none z-[9997] cursor-ring"
+        className="fixed top-0 left-0 rounded-full pointer-events-none z-[9997] border border-white/20"
         animate={{
-          x: mousePosition.x - (isHovering ? 32 : 20),
-          y: mousePosition.y - (isHovering ? 32 : 20),
-          width: isHovering ? 64 : 40,
-          height: isHovering ? 64 : 40,
+          x: mousePosition.x - (isHovering ? 24 : 16),
+          y: mousePosition.y - (isHovering ? 24 : 16),
+          width: isHovering ? 48 : 32,
+          height: isHovering ? 48 : 32,
         }}
         transition={{
           x: { type: "tween", ease: "linear", duration: 0 },
           y: { type: "tween", ease: "linear", duration: 0 },
-          width: { type: "spring", stiffness: 500, damping: 30, duration: 0.1 },
+          width: {
+            type: "spring",
+            stiffness: 300,
+            damping: 25,
+            duration: 0.15,
+          },
           height: {
             type: "spring",
-            stiffness: 500,
-            damping: 30,
-            duration: 0.1,
+            stiffness: 300,
+            damping: 25,
+            duration: 0.15,
           },
         }}
-      />
-
-      {/* Inverted inner circle */}
-      <motion.div
-        className="fixed top-0 left-0 rounded-full pointer-events-none z-[9998] mix-blend-difference"
         style={{
-          backgroundColor: "white",
-        }}
-        animate={{
-          x: mousePosition.x - (isHovering ? 16 : 10),
-          y: mousePosition.y - (isHovering ? 16 : 10),
-          width: isHovering ? 32 : 20,
-          height: isHovering ? 32 : 20,
-        }}
-        transition={{
-          x: { type: "tween", ease: "linear", duration: 0 },
-          y: { type: "tween", ease: "linear", duration: 0 },
-          width: { type: "spring", stiffness: 500, damping: 30, duration: 0.1 },
-          height: {
-            type: "spring",
-            stiffness: 500,
-            damping: 30,
-            duration: 0.1,
-          },
+          background: isHovering
+            ? "radial-gradient(circle, transparent 60%, rgba(255, 255, 255, 0.1) 60%, rgba(255, 255, 255, 0.2) 80%, transparent 80%)"
+            : "radial-gradient(circle, transparent 70%, rgba(255, 255, 255, 0.1) 70%, rgba(255, 255, 255, 0.15) 90%, transparent 90%)",
         }}
       />
     </>

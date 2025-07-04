@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import IntroAnimation from "@/components/animations/IntroAnimation";
 import { motion } from "framer-motion";
 import { useDevMode } from "@/context/DevModeContext";
@@ -16,8 +16,6 @@ import {
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import DevModeToggle from "@/components/ui/DevModeToggle";
 import AuthModal from "@/components/ui/AuthModal";
-import BubbleCarousel from "@/components/ui/BubbleCarousel";
-import SpotifyNowPlaying from "@/components/ui/SpotifyNowPlaying";
 import {
   FaGamepad,
   FaBook,
@@ -31,9 +29,17 @@ import {
 import RotatingText from "@/components/animations/RotatingText";
 import CustomCursor from "@/components/ui/CustomCursor";
 import { useMagneticEffect } from "@/hooks/useMagneticEffect";
-import SkillsShowcase from "@/components/ui/SkillsShowcase";
-import ParticleBackground from "@/components/animations/ParticleBackground";
 import ParticleToggle from "@/components/ui/ParticleToggle";
+
+// Lazy load heavy components to improve initial page load
+const ParticleBackground = lazy(
+  () => import("@/components/animations/ParticleBackground")
+);
+const BubbleCarousel = lazy(() => import("@/components/ui/BubbleCarousel"));
+const SpotifyNowPlaying = lazy(
+  () => import("@/components/ui/SpotifyNowPlaying")
+);
+const SkillsShowcase = lazy(() => import("@/components/ui/SkillsShowcase"));
 
 const hobbies = [
   {
@@ -102,6 +108,13 @@ const learningGoals = [
   },
 ];
 
+// Loading fallback component
+const LoadingFallback = ({ className = "" }: { className?: string }) => (
+  <div className={`flex items-center justify-center ${className}`}>
+    <div className="w-8 h-8 border-2 border-gray-600 border-t-white rounded-full animate-spin opacity-50"></div>
+  </div>
+);
+
 export default function Home() {
   const [introComplete, setIntroComplete] = useState(false);
   const [spotifyMessage, setSpotifyMessage] = useState<{
@@ -144,16 +157,17 @@ export default function Home() {
     }
   }, []);
 
-  // Magnetic effect refs
-  const heroRef = useMagneticEffect(0.2);
-  const socialRef = useMagneticEffect(0.4);
-  const projectRef = useMagneticEffect(0.3);
-
-  const aiAssistantRef = useMagneticEffect(0.5);
+  // Optimized magnetic effect refs with reduced intensity
+  const heroRef = useMagneticEffect(0.1);
+  const socialRef = useMagneticEffect(0.2);
+  const projectRef = useMagneticEffect(0.15);
+  const aiAssistantRef = useMagneticEffect(0.25);
 
   return (
     <main className="min-h-screen relative cursor-none">
-      <ParticleBackground particleCount={80} maxConnectionDistance={120} />
+      <Suspense fallback={<LoadingFallback className="fixed inset-0 z-0" />}>
+        <ParticleBackground particleCount={60} maxConnectionDistance={100} />
+      </Suspense>
       <CustomCursor />
       <IntroAnimation onComplete={() => setIntroComplete(true)} />
       <AuthModal />
@@ -580,7 +594,9 @@ export default function Home() {
         {/* Skills Section */}
         <section className="py-20" id="skills">
           <div className="max-w-7xl mx-auto px-4">
-            <SkillsShowcase />
+            <Suspense fallback={<LoadingFallback className="py-20" />}>
+              <SkillsShowcase />
+            </Suspense>
           </div>
         </section>
 
@@ -597,14 +613,18 @@ export default function Home() {
                 <h3 className="text-2xl font-semibold text-center mb-8 text-white dark:text-white light:text-gray-800">
                   Hobbies
                 </h3>
-                <BubbleCarousel items={hobbies} />
+                <Suspense fallback={<LoadingFallback className="h-[400px]" />}>
+                  <BubbleCarousel items={hobbies} />
+                </Suspense>
 
                 {/* Spotify Integration */}
                 <div className="mt-8">
                   <h4 className="text-xl font-medium mb-4 text-white dark:text-white light:text-gray-800">
                     Currently Playing
                   </h4>
-                  <SpotifyNowPlaying />
+                  <Suspense fallback={<LoadingFallback className="h-16" />}>
+                    <SpotifyNowPlaying />
+                  </Suspense>
                 </div>
               </div>
 
@@ -613,7 +633,9 @@ export default function Home() {
                 <h3 className="text-2xl font-semibold text-center mb-8 text-white dark:text-white light:text-gray-800">
                   Learning Goals
                 </h3>
-                <BubbleCarousel items={learningGoals} />
+                <Suspense fallback={<LoadingFallback className="h-[400px]" />}>
+                  <BubbleCarousel items={learningGoals} />
+                </Suspense>
               </div>
             </div>
           </div>

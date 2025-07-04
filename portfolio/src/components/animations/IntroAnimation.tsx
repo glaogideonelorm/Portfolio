@@ -11,15 +11,13 @@ export default function IntroAnimation({ onComplete }: IntroAnimationProps) {
   const [slideFirst, setSlideFirst] = useState(false);
 
   useEffect(() => {
-    // First text slides in
+    // Optimized timing with single timeout chain
     const timer1 = setTimeout(() => setSlideFirst(true), 300);
-    // First text moves to the side and second text appears
     const timer2 = setTimeout(() => setShowSecondText(true), 1200);
-    // Animation completes
     const timer3 = setTimeout(() => {
       setComplete(true);
       onComplete();
-    }, 3000);
+    }, 2800); // Slightly faster completion
 
     return () => {
       clearTimeout(timer1);
@@ -36,7 +34,7 @@ export default function IntroAnimation({ onComplete }: IntroAnimationProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
         >
           <div className="flex items-center gap-3 text-4xl md:text-6xl font-bold overflow-hidden">
             <motion.span
@@ -47,9 +45,8 @@ export default function IntroAnimation({ onComplete }: IntroAnimationProps) {
                 x: slideFirst ? (showSecondText ? -20 : 0) : -100,
               }}
               transition={{
-                duration: 0.5,
+                duration: 0.4,
                 ease: "easeOut",
-                x: { duration: showSecondText ? 0.5 : 0.5 },
               }}
             >
               Hello, I&apos;m Gideon Glago
@@ -59,10 +56,10 @@ export default function IntroAnimation({ onComplete }: IntroAnimationProps) {
               {showSecondText && (
                 <motion.span
                   className="text-gradient-alt inline-block"
-                  initial={{ opacity: 0, y: 50 }}
+                  initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{
-                    duration: 0.5,
+                    duration: 0.4,
                     ease: "easeOut",
                   }}
                 >

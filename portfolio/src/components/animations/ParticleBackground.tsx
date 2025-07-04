@@ -11,10 +11,10 @@ interface ParticleBackgroundProps {
 }
 
 export default function ParticleBackground({
-  particleCount = 100,
+  particleCount = 80,
   particleColor,
   connectionColor,
-  maxConnectionDistance = 150,
+  maxConnectionDistance = 120,
 }: ParticleBackgroundProps) {
   const mountRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<THREE.Scene>();
@@ -24,6 +24,7 @@ export default function ParticleBackground({
   const linesRef = useRef<THREE.LineSegments>();
   const mouseRef = useRef({ x: 0, y: 0 });
   const frameRef = useRef<number>();
+  const connectionUpdateCounterRef = useRef(0);
   const [currentTheme, setCurrentTheme] = useState<"light" | "dark">("dark");
   const [isEnabled, setIsEnabled] = useState(true);
 
@@ -105,14 +106,14 @@ export default function ParticleBackground({
     camera.position.z = 500;
     cameraRef.current = camera;
 
-    // Renderer setup
+    // Renderer setup - optimized for performance
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
-      antialias: true,
+      antialias: false, // Disabled for performance
       powerPreference: "high-performance",
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); // Capped for performance
     renderer.setClearColor(0x000000, 0);
     rendererRef.current = renderer;
 
@@ -130,9 +131,9 @@ export default function ParticleBackground({
       particlePositions[i + 2] = (Math.random() - 0.5) * 500;
 
       // Random velocities
-      particleVelocities[i] = (Math.random() - 0.5) * 1.2;
-      particleVelocities[i + 1] = (Math.random() - 0.5) * 1.2;
-      particleVelocities[i + 2] = (Math.random() - 0.5) * 0.8;
+      particleVelocities[i] = (Math.random() - 0.5) * 0.8; // Reduced velocity
+      particleVelocities[i + 1] = (Math.random() - 0.5) * 0.8;
+      particleVelocities[i + 2] = (Math.random() - 0.5) * 0.5;
     }
 
     particleGeometry.setAttribute(
@@ -144,14 +145,12 @@ export default function ParticleBackground({
       new THREE.BufferAttribute(particleVelocities, 3)
     );
 
-    // Particle material with glow effect
+    // Simplified particle material
     const particleMaterial = new THREE.PointsMaterial({
       color: actualParticleColor,
-      size: 4,
+      size: 3, // Reduced size
       transparent: true,
-      opacity: currentTheme === "light" ? 0.7 : 0.9,
-      blending: THREE.AdditiveBlending,
-      vertexColors: false,
+      opacity: currentTheme === "light" ? 0.6 : 0.8,
       sizeAttenuation: true,
     });
 
@@ -164,8 +163,7 @@ export default function ParticleBackground({
     const lineMaterial = new THREE.LineBasicMaterial({
       color: actualConnectionColor,
       transparent: true,
-      opacity: currentTheme === "light" ? 0.2 : 0.3,
-      blending: THREE.AdditiveBlending,
+      opacity: currentTheme === "light" ? 0.15 : 0.25,
     });
 
     const lines = new THREE.LineSegments(lineGeometry, lineMaterial);
@@ -183,13 +181,12 @@ export default function ParticleBackground({
       particleMaterial.color.setHex(
         parseInt(actualParticleColor.replace("#", "0x"))
       );
-      particleMaterial.opacity = currentTheme === "light" ? 0.7 : 0.9;
-      particleMaterial.size = 4;
+      particleMaterial.opacity = currentTheme === "light" ? 0.6 : 0.8;
 
       lineMaterial.color.setHex(
         parseInt(actualConnectionColor.replace("#", "0x"))
       );
-      lineMaterial.opacity = currentTheme === "light" ? 0.2 : 0.3;
+      lineMaterial.opacity = currentTheme === "light" ? 0.15 : 0.25;
     }
   }, [currentTheme, actualParticleColor, actualConnectionColor]);
 
@@ -200,9 +197,10 @@ export default function ParticleBackground({
       .array as Float32Array;
     const linePositions: number[] = [];
 
-    // Create connections between nearby particles
-    for (let i = 0; i < particleCount; i++) {
-      for (let j = i + 1; j < particleCount; j++) {
+    // Optimized connection calculation - skip some particles for performance
+    const step = Math.max(1, Math.floor(particleCount / 50)); // Limit connections
+    for (let i = 0; i < particleCount; i += step) {
+      for (let j = i + step; j < particleCount; j += step) {
         const x1 = positions[i * 3];
         const y1 = positions[i * 3 + 1];
         const z1 = positions[i * 3 + 2];
@@ -211,11 +209,10 @@ export default function ParticleBackground({
         const y2 = positions[j * 3 + 1];
         const z2 = positions[j * 3 + 2];
 
-        const distance = Math.sqrt(
-          (x1 - x2) ** 2 + (y1 - y2) ** 2 + (z1 - z2) ** 2
-        );
+        const distanceSquared =
+          (x1 - x2) ** 2 + (y1 - y2) ** 2 + (z1 - z2) ** 2;
 
-        if (distance < maxConnectionDistance) {
+        if (distanceSquared < maxConnectionDistance ** 2) {
           linePositions.push(x1, y1, z1, x2, y2, z2);
         }
       }
@@ -242,29 +239,31 @@ export default function ParticleBackground({
     const velocities = particlesRef.current.geometry.attributes.velocity
       .array as Float32Array;
 
-    // Update particle positions
+    // Update particle positions with reduced calculations
     for (let i = 0; i < particleCount * 3; i += 3) {
-      // Apply velocity
       positions[i] += velocities[i];
       positions[i + 1] += velocities[i + 1];
       positions[i + 2] += velocities[i + 2];
 
-      // Mouse interaction
-      const mouseInfluence = 80;
-      const mouseX = (mouseRef.current.x / window.innerWidth) * 2 - 1;
-      const mouseY = -(mouseRef.current.y / window.innerHeight) * 2 + 1;
+      // Simplified mouse interaction - only for nearby particles
+      const particleX = positions[i];
+      const particleY = positions[i + 1];
+      const mouseWorldX = (mouseRef.current.x / window.innerWidth) * 1000 - 500;
+      const mouseWorldY =
+        -(mouseRef.current.y / window.innerHeight) * 1000 + 500;
 
-      const mouseWorldX = mouseX * 500;
-      const mouseWorldY = mouseY * 500;
+      const distanceSquared =
+        (particleX - mouseWorldX) ** 2 + (particleY - mouseWorldY) ** 2;
 
-      const dx = positions[i] - mouseWorldX;
-      const dy = positions[i + 1] - mouseWorldY;
-      const distance = Math.sqrt(dx * dx + dy * dy);
+      if (distanceSquared < 6400) {
+        // 80px influence radius squared
+        const distance = Math.sqrt(distanceSquared);
+        const force = (80 - distance) / 80;
+        const dx = (particleX - mouseWorldX) / distance;
+        const dy = (particleY - mouseWorldY) / distance;
 
-      if (distance < mouseInfluence) {
-        const force = (mouseInfluence - distance) / mouseInfluence;
-        velocities[i] += (dx / distance) * force * 0.05;
-        velocities[i + 1] += (dy / distance) * force * 0.05;
+        velocities[i] += dx * force * 0.02;
+        velocities[i + 1] += dy * force * 0.02;
       }
 
       // Boundary wrapping
@@ -276,22 +275,24 @@ export default function ParticleBackground({
       if (positions[i + 2] < -250) positions[i + 2] = 250;
 
       // Damping
-      velocities[i] *= 0.995;
-      velocities[i + 1] *= 0.995;
-      velocities[i + 2] *= 0.995;
+      velocities[i] *= 0.998;
+      velocities[i + 1] *= 0.998;
+      velocities[i + 2] *= 0.998;
     }
 
     particlesRef.current.geometry.attributes.position.needsUpdate = true;
 
-    // Update connections every few frames for performance
-    if (Math.random() < 0.1) {
+    // Update connections less frequently
+    connectionUpdateCounterRef.current++;
+    if (connectionUpdateCounterRef.current % 20 === 0) {
+      // Every 20 frames instead of random
       updateConnections();
     }
 
-    // Gentle camera rotation
-    const time = Date.now() * 0.00015;
-    cameraRef.current.position.x = Math.sin(time) * 25;
-    cameraRef.current.position.y = Math.cos(time) * 15;
+    // Reduced camera animation
+    const time = Date.now() * 0.0001;
+    cameraRef.current.position.x = Math.sin(time) * 15;
+    cameraRef.current.position.y = Math.cos(time) * 10;
     cameraRef.current.lookAt(0, 0, 0);
 
     rendererRef.current.render(sceneRef.current, cameraRef.current);
