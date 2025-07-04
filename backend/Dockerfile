@@ -1,5 +1,5 @@
-# Use the official OpenJDK runtime as the base image
-FROM openjdk:17-jdk-alpine AS build
+# Use Eclipse Temurin as the base image
+FROM eclipse-temurin:17-jdk-alpine AS build
 
 # Set the working directory
 WORKDIR /app
@@ -22,7 +22,7 @@ COPY src src
 RUN ./mvnw clean package -DskipTests
 
 # Production stage
-FROM openjdk:17-jre-alpine
+FROM eclipse-temurin:17-jre-alpine
 
 # Create a non-root user
 RUN addgroup -g 1001 -S spring
