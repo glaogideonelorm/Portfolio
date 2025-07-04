@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/ui/Header";
-import Footer from "@/components/ui/Footer";
 import { DevModeProvider } from "@/context/DevModeContext";
 
-const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
 
 export const metadata: Metadata = {
-  title: "Gideon Glago - Software Developer",
+  title: "Gideon Glago | Software Developer",
   description:
-    "The portfolio of Gideon Glago, a passionate software developer specializing in React and Django.",
+    "Portfolio website showcasing my work and skills as a software developer",
 };
 
 export default function RootLayout({
@@ -19,13 +20,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="!scroll-smooth">
-      <body className={inter.className}>
-        <DevModeProvider>
-          <Header />
-          <main>{children}</main>
-          <Footer />
-        </DevModeProvider>
+    <html lang="en">
+      <body className={poppins.className}>
+        <DevModeProvider>{children}</DevModeProvider>
       </body>
     </html>
   );

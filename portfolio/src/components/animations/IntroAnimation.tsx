@@ -1,54 +1,78 @@
-"use client";
-
-import { motion, type Variants } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 
-type IntroAnimationProps = {
-  onAnimationComplete: () => void;
-};
+interface IntroAnimationProps {
+  onComplete: () => void;
+}
 
-export default function IntroAnimation({
-  onAnimationComplete,
-}: IntroAnimationProps) {
-  const [shouldExit, setShouldExit] = useState(false);
+export default function IntroAnimation({ onComplete }: IntroAnimationProps) {
+  const [showSecondText, setShowSecondText] = useState(false);
+  const [complete, setComplete] = useState(false);
+  const [slideFirst, setSlideFirst] = useState(false);
 
-  const textVariants: Variants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6 },
-    },
-  };
-
-  // Disable auto-fade while testing to keep the intro visible.
   useEffect(() => {
-    // no-op
-  }, []);
+    // First text slides in
+    const timer1 = setTimeout(() => setSlideFirst(true), 300);
+    // First text moves to the side and second text appears
+    const timer2 = setTimeout(() => setShowSecondText(true), 1200);
+    // Animation completes
+    const timer3 = setTimeout(() => {
+      setComplete(true);
+      onComplete();
+    }, 3000);
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
+    };
+  }, [onComplete]);
 
   return (
-    <motion.div
-      className="fixed inset-0 z-[99999] flex items-center justify-center bg-gray-900"
-      initial={{ opacity: 1 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
-    >
-      <motion.div
-        className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold flex flex-col items-center justify-center text-center space-y-4"
-        initial="hidden"
-        animate="visible"
-        transition={{ staggerChildren: 0.6 }}
-      >
-        <motion.span variants={textVariants} className="text-white">
-          Hey, I&apos;m <span className="text-blue-500">Gideon</span>
-        </motion.span>
-        <motion.span
-          variants={textVariants}
-          className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent"
+    <AnimatePresence>
+      {!complete && (
+        <motion.div
+          className="fixed inset-0 flex items-center justify-center bg-black z-50"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
         >
-          Software Developer
-        </motion.span>
-      </motion.div>
-    </motion.div>
+          <div className="flex items-center gap-3 text-4xl md:text-6xl font-bold overflow-hidden">
+            <motion.span
+              className="text-gradient inline-block"
+              initial={{ opacity: 0, x: -100 }}
+              animate={{
+                opacity: 1,
+                x: slideFirst ? (showSecondText ? -20 : 0) : -100,
+              }}
+              transition={{
+                duration: 0.5,
+                ease: "easeOut",
+                x: { duration: showSecondText ? 0.5 : 0.5 },
+              }}
+            >
+              Hello, I&apos;m Gideon Glago
+            </motion.span>
+
+            <AnimatePresence>
+              {showSecondText && (
+                <motion.span
+                  className="text-gradient-alt inline-block"
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.5,
+                    ease: "easeOut",
+                  }}
+                >
+                  | Software Developer
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
