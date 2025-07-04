@@ -4,10 +4,13 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft, Gamepad2, Trophy, Users, Target } from "lucide-react";
 import { FaGamepad } from "react-icons/fa";
+import CustomCursor from "@/components/ui/CustomCursor";
 
 export default function GamingPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 cursor-none">
+      <CustomCursor />
+
       {/* Header */}
       <header className="relative z-10 p-6">
         <Link

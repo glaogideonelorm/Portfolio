@@ -104,7 +104,7 @@ export OPENAI_API_KEY="sk-…"
 
 ## 🤝 Contact
 
-**Gideon Glago** • [LinkedIn](https://www.linkedin.com/in/gideonglago) • [Email](mailto:gideonglago@gmail.com)
+**Gideon Glago** • [LinkedIn](https://www.linkedin.com/in/glagogideon/) • [Email](mailto:glagogideonelorm2006@gmail.com)
 
 If this portfolio sparks ideas or roles you think I'd be perfect for, let's chat! :)
 

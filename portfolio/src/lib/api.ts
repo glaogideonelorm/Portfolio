@@ -1,6 +1,8 @@
 import { Buffer } from "buffer";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080/api/v1/portfolio";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || (process.env.NODE_ENV === 'production' 
+  ? "https://api.gideonglago.com/api/v1/portfolio" 
+  : "http://localhost:8080/api/v1/portfolio");
 
 export interface Project {
   id?: number;

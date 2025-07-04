@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft, BookOpen, Star, Clock, Heart } from "lucide-react";
 import { FaBook } from "react-icons/fa";
+import CustomCursor from "@/components/ui/CustomCursor";
 
 export default function ReadingPage() {
   const currentBooks = [
@@ -46,7 +47,9 @@ export default function ReadingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 dark:from-gray-900 dark:via-black dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 dark:from-gray-900 dark:via-black dark:to-gray-800 cursor-none">
+      <CustomCursor />
+
       {/* Header */}
       <header className="relative z-10 p-6">
         <Link

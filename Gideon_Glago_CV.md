@@ -2,7 +2,7 @@
 
 **Full-Stack Engineer · AI Enthusiast · UTC + 0**  
 📞 **Tel:** +233 530 686 764  |  📧 **Email:** glagogideonelorm2006@gmail.com  
-🔗 **LinkedIn:** https://linkedin.com/in/gideonglago  |  💻 **GitHub:** https://github.com/glaogideonelorm
+🔗 **LinkedIn:** https://www.linkedin.com/in/glagogideon/  |  💻 **GitHub:** https://github.com/glaogideonelorm
 
 ---
 

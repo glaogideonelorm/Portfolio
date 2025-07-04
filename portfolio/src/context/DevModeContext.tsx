@@ -28,15 +28,12 @@ export const DevModeProvider: React.FC<{ children: React.ReactNode }> = ({
   const [authError, setAuthError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Load dev mode state from localStorage, default to user mode
+    // Check if user was previously authenticated in dev mode
     const savedMode = localStorage.getItem("devMode");
     if (savedMode === "true") {
-      // Only show auth modal if explicitly trying to access dev mode
-      setShowAuthModal(true);
-    } else {
-      setIsDevMode(false);
-      localStorage.setItem("devMode", "false");
+      setIsDevMode(true);
     }
+    // Don't automatically show auth modal on load
   }, []);
 
   const toggleAuthModal = () => {
@@ -60,6 +57,7 @@ export const DevModeProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const logout = () => {
     setIsDevMode(false);
+    setShowAuthModal(false);
     localStorage.removeItem("devMode");
   };
 
@@ -79,8 +77,10 @@ export const DevModeProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-export function useDevMode() {
-  const ctx = useContext(DevModeContext);
-  if (!ctx) throw new Error("useDevMode must be used within DevModeProvider");
-  return ctx;
-}
+export const useDevMode = () => {
+  const context = useContext(DevModeContext);
+  if (context === undefined) {
+    throw new Error("useDevMode must be used within a DevModeProvider");
+  }
+  return context;
+};
