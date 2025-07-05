@@ -38,7 +38,16 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:3000"));
+
+        // Allow configurable origins via environment variable (comma-separated).
+        // If none provided, default to localhost in dev and wildcard in prod.
+        String envOrigins = System.getenv("CORS_ORIGINS");
+        if (envOrigins != null && !envOrigins.isBlank()) {
+            config.setAllowedOrigins(List.of(envOrigins.split(",")));
+        } else {
+            // Fallback: allow common dev origin and wildcard for other deployments.
+            config.setAllowedOriginPatterns(List.of("*"));
+        }
         config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
