@@ -1,14 +1,20 @@
 import { Buffer } from "buffer";
 
-// Determine API base URL from environment with sensible fallbacks.
-// 1. Use NEXT_PUBLIC_API_URL when provided (works both client & server).
-// 2. In development, default to the local Spring Boot server.
-// 3. In production (browser), fall back to the same-origin "/api" route that can be proxied/re-written.
-const API_BASE_URL =
+// Build the base URL and guarantee it ends with "/api".
+let _baseUrl =
   process.env.NEXT_PUBLIC_API_URL ??
   (typeof window === "undefined"
-    ? "http://localhost:8080/api" // Server-side (dev) fallback
-    : "/api"); // Client-side (prod) fallback
+    ? "http://localhost:8080" // Server-side (dev) fallback
+    : ""); // Client-side (prod) fallback relies on same-origin rewrites
+
+if (!_baseUrl.endsWith("/api")) {
+  // Avoid double slashes
+  _baseUrl = _baseUrl.replace(/\/?$/, "");
+  _baseUrl += "/api";
+}
+
+// When _baseUrl is empty (client-side prod without env var) default to "/api".
+export const API_BASE_URL = _baseUrl || "/api";
 
 export interface Project {
   id?: number;
