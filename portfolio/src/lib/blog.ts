@@ -106,15 +106,14 @@ export function getRelatedPosts(currentSlug: string, limit: number = 3): BlogPos
 
   // Find posts with similar tags
   const relatedPosts = allPosts
-    .filter(post => post.slug !== currentSlug)
-    .map(post => ({
-      ...post,
-      score: post.tags.filter(tag => currentPost.tags.includes(tag)).length
-    }))
-    .filter(post => post.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, limit)
-    .map(({ score, ...post }) => post);
+    .filter((post) => post.slug !== currentSlug)
+    .filter((post) => post.tags.some((tag) => currentPost.tags.includes(tag)))
+    .sort((a, b) => {
+      const scoreB = b.tags.filter((tag) => currentPost.tags.includes(tag)).length;
+      const scoreA = a.tags.filter((tag) => currentPost.tags.includes(tag)).length;
+      return scoreB - scoreA;
+    })
+    .slice(0, limit);
 
   return relatedPosts;
 } 

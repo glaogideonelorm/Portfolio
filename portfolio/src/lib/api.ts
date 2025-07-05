@@ -17,7 +17,7 @@ interface Credentials {
   password: string;
 }
 
-function authHeader(creds?: Credentials): Record<string, string> {
+export function authHeader(creds?: Credentials): Record<string, string> {
   if (!creds) return {};
   const token =
     typeof window === "undefined"
@@ -26,7 +26,7 @@ function authHeader(creds?: Credentials): Record<string, string> {
   return { Authorization: `Basic ${token}` };
 }
 
-async function handleResponse<T>(res: Response): Promise<T> {
+export async function handleResponse<T>(res: Response): Promise<T> {
   if (!res.ok) {
     throw new Error(await res.text());
   }

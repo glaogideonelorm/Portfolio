@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { Plus, Edit, ExternalLink, Github } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Project, getProjects } from "@/lib/api";
 import ProjectCard from "@/components/ui/ProjectCard";
 import ProjectModal from "@/components/ui/ProjectModal";

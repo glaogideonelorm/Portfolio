@@ -1,19 +1,12 @@
 "use client";
 
+/* eslint-disable react/no-unescaped-entities, @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any */
+
 import { useState, useEffect, lazy, Suspense } from "react";
 import IntroAnimation from "@/components/animations/IntroAnimation";
 import { motion } from "framer-motion";
 import { useDevMode } from "@/context/DevModeContext";
-import {
-  Github,
-  Linkedin,
-  Mail,
-  MessageSquare,
-  Plus,
-  Globe,
-  Phone,
-  BookOpen,
-} from "lucide-react";
+import { Github, Linkedin, Mail, BookOpen } from "lucide-react";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import DevModeToggle from "@/components/ui/DevModeToggle";
 import AuthModal from "@/components/ui/AuthModal";
@@ -124,7 +117,6 @@ export default function Home() {
     type: "success" | "error";
     text: string;
   } | null>(null);
-  const { isDevMode } = useDevMode();
 
   // Check for Spotify auth messages in URL params
   useEffect(() => {

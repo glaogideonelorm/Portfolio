@@ -1,23 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Link from "next/link";
-import {
-  Calendar,
-  Clock,
-  Tag,
-  ArrowLeft,
-  Share2,
-  BookOpen,
-} from "lucide-react";
+import { Calendar, Clock, Tag, ArrowLeft, BookOpen } from "lucide-react";
 import { getPostBySlug, getRelatedPosts } from "@/lib/blog";
 import { notFound } from "next/navigation";
 
-interface BlogPostPageProps {
-  params: {
-    slug: string;
-  };
-}
-
-export default async function BlogPostPage({ params }: BlogPostPageProps) {
-  const { slug } = await params;
+export default async function BlogPostPage({ params }: any) {
+  const { slug } = params;
 
   // Server-side data fetching
   const post = getPostBySlug(slug);

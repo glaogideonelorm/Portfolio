@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import Link from "next/link";
 import { Calendar, Clock, Tag } from "lucide-react";
 import { getAllPosts } from "@/lib/blog";
@@ -42,7 +41,7 @@ export default async function BlogPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {posts.map((post, index) => (
+            {posts.map((post) => (
               <article
                 key={post.slug}
                 className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 hover:bg-gray-800/70 transition-all duration-300 border border-gray-700/50 hover:border-gray-600/50"

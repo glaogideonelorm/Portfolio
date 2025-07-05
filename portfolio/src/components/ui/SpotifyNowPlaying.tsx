@@ -39,6 +39,7 @@ export default function SpotifyNowPlaying() {
           }
         }
       } catch (err) {
+        console.error(err);
         setError("Failed to connect to Spotify");
       } finally {
         setIsLoading(false);
@@ -77,7 +78,7 @@ export default function SpotifyNowPlaying() {
             <p className="text-xs text-gray-400">
               {error === "refresh_token_missing"
                 ? "Complete authentication to enable"
-                : "Share what you're listening to"}
+                : "Share what you&apos;re listening to"}
             </p>
           </div>
         </motion.div>
@@ -116,7 +117,7 @@ export default function SpotifyNowPlaying() {
       <div className="bg-gray-800/50 p-4 rounded-lg">
         <p className="text-gray-400 text-sm">No track playing</p>
         <p className="text-gray-500 text-xs">
-          Connect Spotify to see what you're listening to
+          Connect Spotify to see what you&apos;re listening to
         </p>
       </div>
     );

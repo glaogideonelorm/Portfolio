@@ -27,6 +27,7 @@ export default function SpotifyAuth() {
           window.location.href = data.url;
         }
       } catch (err) {
+        console.error(err);
         setError("Failed to initiate Spotify authentication");
         setStatus("error");
       }

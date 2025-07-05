@@ -159,6 +159,7 @@ export default function ProjectModal({
         }
       }
     } catch (err) {
+      console.error(err);
       setError("An error occurred. Please try again.");
     } finally {
       setLoading(false);
@@ -179,9 +180,11 @@ export default function ProjectModal({
         onProjectChange();
         onClose();
       } else {
+        console.error("Failed to delete project");
         setError("Failed to delete project");
       }
     } catch (err) {
+      console.error(err);
       setError("An error occurred while deleting the project");
     } finally {
       setLoading(false);

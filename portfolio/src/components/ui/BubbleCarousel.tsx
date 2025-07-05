@@ -21,7 +21,6 @@ export default function BubbleCarousel({
   autoRotateSpeed = 3000,
 }: BubbleCarouselProps) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [direction, setDirection] = useState(1); // 1 for forward, -1 for backward
 
   useEffect(() => {
     const interval = setInterval(() => {
