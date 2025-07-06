@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { DevModeProvider } from "@/context/DevModeContext";
+import { AnalyticsProvider } from "@/context/AnalyticsContext";
 import { Analytics } from "@vercel/analytics/next";
 
 const poppins = Poppins({
@@ -23,7 +24,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={poppins.className}>
-        <DevModeProvider>{children}</DevModeProvider>
+        <DevModeProvider>
+          <AnalyticsProvider>
+            {children}
+          </AnalyticsProvider>
+        </DevModeProvider>
         <Analytics />
       </body>
     </html>

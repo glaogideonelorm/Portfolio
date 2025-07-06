@@ -28,6 +28,11 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-secure_password}
       SPRING_PROFILES_ACTIVE: prod
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-changeme}
+      CORS_ORIGINS: ${CORS_ORIGINS:-*}
+      ANALYTICS_RETENTION_DAYS: ${ANALYTICS_RETENTION_DAYS:-90}
+      ANALYTICS_CLEANUP_ENABLED: ${ANALYTICS_CLEANUP_ENABLED:-true}
     ports:
       - "8080:8080"
     depends_on:
@@ -50,6 +55,7 @@ services:
     environment:
       NEXT_PUBLIC_API_URL: http://backend:8080/api
       NODE_ENV: production
+      NEXT_PUBLIC_ANALYTICS_ENABLED: ${NEXT_PUBLIC_ANALYTICS_ENABLED:-true}
     ports:
       - "3000:3000"
     depends_on:

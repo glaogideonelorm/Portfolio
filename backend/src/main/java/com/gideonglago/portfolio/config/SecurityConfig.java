@@ -28,6 +28,8 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.GET, "/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/analytics/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/analytics/**").permitAll()
                 .anyRequest().authenticated()
             )
             .httpBasic(Customizer.withDefaults())
@@ -50,6 +52,7 @@ public class SecurityConfig {
         }
         config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
@@ -57,11 +60,18 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService users() {
-        // In-memory user for dev actions. Password is stored in plain text for demo purposes.
-        UserDetails dev = User.withUsername("dev")
-                .password("{noop}devpass")
-                .roles("DEV")
+        String username = System.getenv("ADMIN_USERNAME");
+        String password = System.getenv("ADMIN_PASSWORD");
+        
+        if (username == null || password == null) {
+            username = "admin";
+            password = "changeme";
+        }
+        
+        UserDetails admin = User.withUsername(username)
+                .password("{noop}" + password)
+                .roles("ADMIN")
                 .build();
-        return new InMemoryUserDetailsManager(dev);
+        return new InMemoryUserDetailsManager(admin);
     }
 } 

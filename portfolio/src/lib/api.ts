@@ -135,4 +135,118 @@ export async function deleteProject(id: number): Promise<boolean> {
     console.error(`Error deleting project ${id}:`, error);
     return false;
   }
+}
+
+// Analytics API Functions
+export interface PageViewData {
+  page: string;
+  sessionId: string;
+}
+
+export interface ClickEventData {
+  sessionId: string;
+  page: string;
+  elementType: string;
+  elementId?: string;
+  elementText?: string;
+  targetUrl?: string;
+  x?: number;
+  y?: number;
+}
+
+export interface AnalyticsStats {
+  totalPageViews: number;
+  uniqueVisitors: number;
+  totalClicks: number;
+  avgSessionDuration: number;
+  avgPageViewsPerSession: number;
+  returningVisitors: number;
+  newVisitors: number;
+  popularPages: Array<{ label: string; value: number }>;
+  topClickedElements: Array<{ label: string; value: number; extra?: string }>;
+  entryPages: Array<{ label: string; value: number }>;
+  exitPages: Array<{ label: string; value: number }>;
+  deviceStats: Array<{ label: string; value: number }>;
+  browserStats: Array<{ label: string; value: number }>;
+  countryStats: Array<{ label: string; value: number }>;
+  referrerStats: Array<{ label: string; value: number }>;
+  pageViewTrend: Array<{ time: string; count: number }>;
+  clickTrend: Array<{ time: string; count: number }>;
+}
+
+export interface ActivityItem {
+  type: 'pageview' | 'click';
+  page?: string;
+  element?: string;
+  timestamp: string;
+  device?: string;
+  country?: string;
+}
+
+// POST track page view
+export async function trackPageView(data: PageViewData): Promise<boolean> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/analytics/track/pageview`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    
+    return response.ok;
+  } catch (error) {
+    console.error('Error tracking page view:', error);
+    return false;
+  }
+}
+
+// POST track click event
+export async function trackClick(data: ClickEventData): Promise<boolean> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/analytics/track/click`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    
+    return response.ok;
+  } catch (error) {
+    console.error('Error tracking click:', error);
+    return false;
+  }
+}
+
+// GET analytics dashboard stats
+export async function getAnalyticsStats(period: string = 'week'): Promise<AnalyticsStats | null> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/analytics/dashboard?period=${period}`);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching analytics stats:', error);
+    return null;
+  }
+}
+
+// GET recent activity
+export async function getRecentActivity(limit: number = 50): Promise<ActivityItem[]> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/analytics/activity?limit=${limit}`);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching recent activity:', error);
+    return [];
+  }
 } 

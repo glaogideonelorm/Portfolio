@@ -323,6 +323,134 @@ export default function Home() {
         {/* Projects Section */}
         <ProjectsSection />
 
+        {/* Analytics Section */}
+        <section className="py-20 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/20 to-purple-900/20 backdrop-blur-sm"></div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="max-w-7xl mx-auto px-4 relative z-10"
+          >
+            <div className="text-center mb-12">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gradient">
+                Real-time Portfolio Analytics
+              </h2>
+              <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+                Explore how visitors interact with my portfolio in real-time.
+                See live statistics, user interactions, and more.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              <motion.div
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10"
+              >
+                <h3 className="text-xl font-semibold text-white mb-2">
+                  Live Visitors
+                </h3>
+                <p className="text-gray-300">
+                  Track real-time user engagement and interactions
+                </p>
+                <div className="mt-4 flex justify-end">
+                  <motion.div
+                    animate={{
+                      scale: [1, 1.2, 1],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                    }}
+                    className="w-3 h-3 bg-green-500 rounded-full"
+                  ></motion.div>
+                </div>
+              </motion.div>
+
+              <motion.div
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10"
+              >
+                <h3 className="text-xl font-semibold text-white mb-2">
+                  Interactive Charts
+                </h3>
+                <p className="text-gray-300">
+                  Visualize visitor behavior and trends
+                </p>
+                <div className="mt-4 flex justify-end">
+                  <svg
+                    className="w-6 h-6 text-blue-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"
+                    />
+                  </svg>
+                </div>
+              </motion.div>
+
+              <motion.div
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10"
+              >
+                <h3 className="text-xl font-semibold text-white mb-2">
+                  User Journey
+                </h3>
+                <p className="text-gray-300">
+                  Follow how visitors explore the portfolio
+                </p>
+                <div className="mt-4 flex justify-end">
+                  <svg
+                    className="w-6 h-6 text-purple-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+                    />
+                  </svg>
+                </div>
+              </motion.div>
+            </div>
+
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 text-center"
+            >
+              <motion.a
+                href="/analytics"
+                className="inline-flex items-center gap-2 text-lg font-semibold text-white hover:text-blue-400 transition-colors cursor-hover"
+                whileHover={{ x: 5 }}
+              >
+                Explore Analytics Dashboard
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 7l5 5m0 0l-5 5m5-5H6"
+                  />
+                </svg>
+              </motion.a>
+            </motion.div>
+          </motion.div>
+        </section>
+
         {/* Skills Section */}
         <section className="py-20" id="skills">
           <div className="max-w-7xl mx-auto px-4">
