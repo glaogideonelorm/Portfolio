@@ -110,4 +110,4 @@ If this portfolio sparks ideas or roles you think I'd be perfect for, let's chat
 
 ---
 
-> Crafted with ❤️, caffeine & a dash of AI magic.
+> Crafted with ❤️ and lots of caffeine
